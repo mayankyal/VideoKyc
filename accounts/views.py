@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404
 from django.contrib.auth import authenticate, login , logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -76,7 +76,7 @@ def home(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['normalUsers'])
 def userPage(request):
-	context={}
+	context={'user': request.user}
 	return render(request, 'accounts/userHome.html', context)
 
 
@@ -86,5 +86,11 @@ def userPage(request):
 def adminPage(request):
     context={}
     return render(request,'accounts/adminHome.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin', 'normalUsers'])
+def room(request, user_id):
+	user = get_object_or_404(User, pk=user_id)
+	return(render(request , 'accounts/room.html', {'user':user}))
 
 

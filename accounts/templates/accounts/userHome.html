@@ -6,4 +6,5 @@
 
 {% block content %}
 <p> you are at user page</p>
+<button onclick="window.location='{% url 'room' user.id %}'">Create video chat room</button>
 {% endblock %}
